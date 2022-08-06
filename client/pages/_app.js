@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.css";
-import buildClient from "../api/build-client";
 import Header from "../components/header";
+import axios from "axios";
 
 const AppComponent = ({ Component, pageProps, currentUser }) => {
   return (
@@ -13,17 +13,47 @@ const AppComponent = ({ Component, pageProps, currentUser }) => {
   );
 };
 
-AppComponent.getInitialProps = async (appContext) => {
-  const client = buildClient(appContext.ctx);
-  const { data } = await client.get("/api/users/currentuser");
+// AppComponent.getInitialProps = async (appContext) => {
+//   const client = buildClient(appContext.ctx);
+//   const { data } = await client.get("/api/users/currentuser");
 
+//   let pageProps = {};
+//   if (appContext.Component.getInitialProps) {
+//     pageProps = await appContext.Component.getInitialProps(
+//       appContext.ctx,
+//       client,
+//       data.currentUser
+//     );
+//   }
+
+//   return {
+//     pageProps,
+//     ...data,
+//   };
+// };
+
+
+AppComponent.getInitialProps = async (appContext) => {
   let pageProps = {};
-  if (appContext.Component.getInitialProps) {
-    pageProps = await appContext.Component.getInitialProps(
-      appContext.ctx,
-      client,
-      data.currentUser
-    );
+  let data = {};
+  try {
+    const r = await axios.get("http://www.ez-app.online/api/users/currentuser");
+    data = r.data;
+
+    if (appContext.Component.getInitialProps) {
+      pageProps = await appContext.Component.getInitialProps(
+        appContext.ctx,
+        client,
+        data.currentUser
+      );
+    }
+
+    return {
+      pageProps,
+      ...data,
+    };
+  } catch (error) {
+    console.error(error);
   }
 
   return {
