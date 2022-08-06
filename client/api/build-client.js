@@ -6,7 +6,7 @@ const buildClient = ({ req }) => {
 
     return axios.create({
       baseURL:
-        "http://ez-app.online/",
+        "http://www.ez-app.online/",
       headers: req.headers,
     });
   } else {
