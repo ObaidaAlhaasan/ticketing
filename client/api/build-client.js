@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const buildClient = ({ req }) => {
+
   if (typeof window === "undefined") {
     // We are on the server
     console.log('====================================');
@@ -8,7 +9,7 @@ const buildClient = ({ req }) => {
     console.log('====================================');
     return axios.create({
       baseURL:
-        "http://www.ez-app.online/",
+        "http://www.ez-app.online",
       headers: req.headers,
     });
   } else {
